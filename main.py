@@ -3,6 +3,7 @@
 # throughout this file
 import pygame
 from constants import *
+from player import Player 
 
 def main():
     # Initiliaze pygame package
@@ -15,23 +16,38 @@ def main():
     # Create a new GUI window
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    # Clock & Delta object
+    # Clock
     clock = pygame.time.Clock()
+
+    # Group updatable & drawable
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    # Group updatable and drawable are Player containers
+    Player.containers = (updatable, drawable)
+
+    # Object Player (player draw in the middle of the screen) 
+    player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
+
+    # Delta
     dt = 0
 
     while True:
-        pygame.Surface.fill(screen, (0,0,0)) # Render a black screen
-        pygame.display.flip() # Refresh the screen
-
-        # Wait for the user to clck on the red cross to quit the screen
+        # Wait for the user to click on the red cross to quit the screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-    
-    # Set the FPS to a maximun threshold to avoid the overused of CPU
-    max_tick = clock.tick(MAX_FPS_RATE)
-    
-    dt = max_tick/1000 # convert the delta from ms to s
+
+        updatable.update(dt)    # update movements of all updatable objects
+        screen.fill("black")    # Render the screen black
+
+        for obj in drawable:    # draw all drawable objects
+            obj.draw(screen)
+        
+        pygame.display.flip()   # Refresh the screen
+
+        # Limit the FPS to a maximun threshold to avoid the overused of CPU
+        dt = clock.tick(MAX_FPS_RATE)/1000      # convert the delta from ms to s
     
 if __name__ == "__main__":
     main()
