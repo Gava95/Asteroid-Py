@@ -35,11 +35,18 @@ class Player(CircleShape):
     def update(self, dt):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_a]:
+        # Press A or LEFT arrow
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             self.rotate(-dt) # player rotate on himself on the left
-        if keys[pygame.K_d]:
+        
+        # Press D or RIGHT arrow
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.rotate(dt) # player rotate on himself on the right
-        if keys[pygame.K_w]:
+
+        # Press W or UP arrow
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
             self.move(dt) # player move up
-        if keys[pygame.K_s]:
+
+        # Press S or DOWN arrow
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
             self.move(-dt) # player move down
