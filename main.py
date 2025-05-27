@@ -2,6 +2,7 @@
 # the open-source pygame library
 # throughout this file
 import pygame
+import sys
 from constants import *
 from player import Player
 from asteroid import Asteroid
@@ -21,25 +22,25 @@ def main():
     # Clock
     clock = pygame.time.Clock()
 
-    # Group updatable & drawable
+    # Group updatable, drawable and asteroids
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
 
-    # Group updatable and drawable are Player containers
-    Player.containers = (updatable, drawable)
-
     # Group asteroids, updatable and drawable are Asteroid containers
     Asteroid.containers = (asteroids, updatable, drawable)
 
-    # Group asteroids, updatable and drawable are Asteroid containers
+    # Group drawable is Asteroid containers
     AsteroidField.containers = (updatable)
-
-    # Object Player (player draw in the middle of the screen) 
-    player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
 
     # Object AsteroidField
     asteroidfield = AsteroidField()
+
+    # Group updatable and drawable are Player containers
+    Player.containers = (updatable, drawable)
+
+    # Object Player (player draw in the middle of the screen) 
+    player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
 
     # Delta
     dt = 0
@@ -51,6 +52,15 @@ def main():
                 return
 
         updatable.update(dt)    # update movements of all updatable objects
+
+        # Iterate over all the asteroids to check if one of them collided with player
+        for asteroid in asteroids:   
+            collided = asteroid.collisions(player)
+            # If a collision is detected we exit the programm
+            if collided == True:
+                print("Game over!")
+                sys.exit()
+
         screen.fill("black")    # Render the screen black
 
         for obj in drawable:    # draw all drawable objects
