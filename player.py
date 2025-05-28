@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 from circleshape import CircleShape
+from shot import Shot
 
 # Player Class that inherits from CircleShape Class
 class Player(CircleShape):
@@ -8,7 +9,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
 
-    # method to draw a triangle
+    # Method to draw a triangle
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
@@ -50,3 +51,12 @@ class Player(CircleShape):
         # Press S or DOWN arrow
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
             self.move(-dt) # player move down
+        
+        # Press SPACEBAR
+        if keys[pygame.K_SPACE]:
+            self.shoot() # player shoot
+    
+    # Method to make the player shoot
+    def shoot(self):
+        shot = Shot(self.position.x, self.position.y)
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
