@@ -66,13 +66,13 @@ def main():
                 print("Game over!")
                 sys.exit()
         
-        for asteroid in asteroids:
+            # Iterate over all the shot to check if one of them collided with asteroids
             for shot in shots:
                 collided = asteroid.collisions(shot)
-                # If a collision is detected we remove the asteroid and shot that collided
+                # If a collision is detected
                 if collided == True:
-                    asteroid.kill()
-                    shot.kill()
+                    shot.kill()         # Shot that collided with asteroid is remove
+                    asteroid.split()    # Large asteroid is split into two small one / Small asteroid is remove
 
         screen.fill("black")    # Render the screen black
 
