@@ -65,6 +65,14 @@ def main():
             if collided == True:
                 print("Game over!")
                 sys.exit()
+        
+        for asteroid in asteroids:
+            for shot in shots:
+                collided = asteroid.collisions(shot)
+                # If a collision is detected we remove the asteroid and shot that collided
+                if collided == True:
+                    asteroid.kill()
+                    shot.kill()
 
         screen.fill("black")    # Render the screen black
 
